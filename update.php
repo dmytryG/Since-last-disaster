@@ -8,7 +8,10 @@ if (empty($updateToken)) {
     $errors[] = "updateToken is required.";
 }
 if (empty($errors)) {
-    $lastEvent = date("c");
+    $date = new DateTime();
+    $date->setTimezone(new DateTimeZone("UTC"));
+    $lastEvent = $date->format(\DateTime::ISO8601);
+//    $lastEvent = date("c");
     $token = bin2hex(random_bytes(32));
     $insertQuery = "UPDATE events SET lastEvent = '$lastEvent' WHERE updateToken = '$updateToken'";
     $db->exec($insertQuery);

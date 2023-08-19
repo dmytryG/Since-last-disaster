@@ -13,7 +13,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errors[] = "Event name is required.";
     }
     if (empty($errors)) {
-        $lastEvent = date("c");
+        $date = new DateTime();
+        $date->setTimezone(new DateTimeZone("UTC"));
+        $lastEvent = $date->format(\DateTime::ISO8601);
+//        $lastEvent = date("c");
         $token = bin2hex(random_bytes(32));
         $insertQuery = "INSERT INTO events (name, description, lastEvent, updateToken) VALUES ('$eventName', '$eventDescription', '$lastEvent', '$token')";
         $db->exec($insertQuery);

@@ -62,7 +62,14 @@ if ($isRequested) {
             function updateElapsedTime() {
                 var lastEventDate = new Date("<?php echo $lastEvent; ?>");
                 var currentDate = new Date();
-                var timeDifference = currentDate - lastEventDate;
+
+                // Convert dates to UTC
+                var lastEventDateUTC = new Date(lastEventDate.getUTCFullYear(), lastEventDate.getUTCMonth(), lastEventDate.getUTCDate(), lastEventDate.getUTCHours(), lastEventDate.getUTCMinutes(), lastEventDate.getUTCSeconds());
+                var currentDateUTC = new Date(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate(), currentDate.getUTCHours(), currentDate.getUTCMinutes(), currentDate.getUTCSeconds());
+
+                var timeDifference = currentDateUTC - lastEventDateUTC;
+                console.log('lastEventDate', lastEventDate, 'currentDate', currentDate, 'timeDifference', timeDifference, '$lastEvent', "<?php echo $lastEvent; ?>")
+                console.log('lastEventDateUTC', lastEventDateUTC, 'currentDateUTC', currentDateUTC)
 
                 var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
                 var hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
