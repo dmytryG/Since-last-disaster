@@ -1,12 +1,15 @@
 <?php
-function getClient(): SQLite3 {
-    // Create or open an SQLite database file
-    $db = new SQLite3('mydatabase.db');
+function getClient(): mysqli {
+    include_once 'env.php';
+    // MySQL server configuration
+    // Create a MySQLi connection
+    $mysqli = new mysqli(ENV::$host, ENV::$username, ENV::$password, ENV::$database, ENV::$port);
 
-    // Create a table if it doesn't exist
-    $query = 'CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY, name TEXT, description TEXT NULL, lastEvent DATETIME, updateToken TEXT)';
-    $db->exec($query);
+    // Check the connection
+    if ($mysqli->connect_error) {
+        die("Connection failed: " . $mysqli->connect_error);
+    }
 
-    return $db;
+    return $mysqli;
 }
 ?>
